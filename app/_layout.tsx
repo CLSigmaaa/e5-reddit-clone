@@ -4,7 +4,7 @@ import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation
 import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { AppState, Platform, View } from 'react-native';
 import { NAV_THEME } from '~/lib/constants';
 import { useColorScheme } from '~/lib/useColorScheme';
 import { PortalHost } from '@rn-primitives/portal';
@@ -12,6 +12,7 @@ import { ThemeToggle } from '~/components/ThemeToggle';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 
 import { AntDesign, MaterialIcons, Entypo } from '@expo/vector-icons'
+import { SWRConfig } from 'swr';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -51,28 +52,53 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="post/[id]/index" // Corrected route name
-          options={{
-            headerTitle: '',
-            headerStyle: { backgroundColor: '#FF5700' },
-            headerLeft: () => <AntDesign name="close" size={24} color="white" onPress={() => router.back()} />,
-            // headerRight: () =>
-            //   <View style={{ flexDirection: 'row', gap: 10 }}>
-            //     <AntDesign name="search1" size={24} color="white" />
-            //     <MaterialIcons name="sort" size={27} color="white" />
-            //     <Entypo name="dots-three-horizontal" size={24} color="white" />
-            //   </View>,
-            // animation: "slide_from_bottom"
-          }}
-        />
-      </Stack>
-      <PortalHost />
-    </ThemeProvider>
+    <SWRConfig
+      value={{
+        provider: () => new Map(),
+        isVisible: () => { return true },
+        initFocus(callback) {
+          let appState = AppState.currentState
+
+          const onAppStateChange = (nextAppState) => {
+            /* Si l'application revient du mode arrière-plan ou d'inactif au mode actif */
+            if (appState.match(/inactive|background/) && nextAppState === 'active') {
+              callback()
+            }
+            appState = nextAppState
+          }
+
+          // Ecoute des événements de changement d'état de l'application
+          const subscription = AppState.addEventListener('change', onAppStateChange)
+
+          return () => {
+            subscription.remove()
+          }
+        }
+      }}
+    >
+
+      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+        <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
+        <Stack>
+          {/* <Stack.Screen name="post/[id]" options={{ headerShown: false }} /> */}
+          <Stack.Screen name="subreddit/[id]" options={{ headerShown: false }} />
+
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="post/[id]/index" // Corrected route name
+            options={{
+              headerTitle: '',
+              headerStyle: { backgroundColor: '#FF5700' },
+              headerLeft: () => <AntDesign name="close" size={24} color="white" onPress={() => router.back()} />,
+              headerRight: () =>
+                <View style={{ flexDirection: 'row', gap: 10 }}></View>,
+              animation: "slide_from_bottom"
+            }}
+          />
+        </Stack>
+        <PortalHost />
+      </ThemeProvider>
+    </SWRConfig>
   );
 }
 

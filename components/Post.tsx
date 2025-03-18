@@ -26,7 +26,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
 
-export const Post = ({ post }) => {
+export const Post = ({ post, isDetailed = true }) => {
     const [voteState, setVoteState] = useState<'upvoted' | 'downvoted' | null>(null);
     const [voteCount, setVoteCount] = useState(post.voteCount);
     const [isJoined, setIsJoined] = useState(false); // State to track join status
@@ -84,9 +84,22 @@ export const Post = ({ post }) => {
             <Link href={`/post/${post.id}`}>
                 <CardContent>
                     <CardDescription>
-                        <Text numberOfLines={1} ellipsizeMode="tail" className="text-gray-400">
-                            {post.description}
-                        </Text>
+                        {post.imageUrl && (
+                            <Image
+                                source={{ uri: post.imageUrl }}
+                                style={{ width: '100%', height: 200 }}
+                                resizeMode="cover"
+                                className="rounded-lg mb-2"
+                            />
+                        )}
+                        {isDetailed ? (
+                            <Text className="text-gray-400">
+                                {post.description}
+                            </Text>
+                        ) : (
+                            // if there is an image don't display text otherwhise display text
+                            post.imageUrl ? null : post.description.slice(0, 100) + (post.description.length > 100 ? '...' : '')
+                        )}
                     </CardDescription>
                 </CardContent>
             </Link>

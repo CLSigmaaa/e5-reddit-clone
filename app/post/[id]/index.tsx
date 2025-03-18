@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Image,
+  ScrollView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -105,7 +106,7 @@ const CommentCard = ({ comment, level = 0 }) => {
               value={reply}
               onChangeText={setReply}
               placeholder="Write a reply..."
-              className="flex-1 border border-gray-300 rounded-md p-2 text-black"
+              className="flex-1 border border-gray-300 rounded-md p-2 text-gray-400"
             />
             <Button onPress={handleReply} className="ml-2">
               <Text>Post</Text>
@@ -146,11 +147,6 @@ const CommentCard = ({ comment, level = 0 }) => {
 };
 
 export default function DetailedPost() {
-  const [comment, setComment] = useState<string>("");
-  const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-  const [replyToId, setReplyToId] = useState<string | null>(null);
-
-  const inputRef = useRef<TextInput | null>(null);
   const insets = useSafeAreaInsets();
   const flatListRef = useRef<FlatList>(null); // Ref for FlatList
 
@@ -161,36 +157,18 @@ export default function DetailedPost() {
     voteCount: 123,
   };
 
-  useEffect(() => {
-    // Scroll to the bottom when the component mounts or comments change
-    flatListRef.current?.scrollToEnd({ animated: true });
-  }, [comments]);
-
-  useEffect(() => {
-    // Reset scroll position when the tab is switched
-    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
-  }, []);
-
-  const handleReplyButtonPressed = useCallback((commentId: string) => {
-    setReplyToId(commentId);
-    inputRef.current?.focus();
-  }, []);
-
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={insets.top + 56} // Adjust for the header height
-    >
-      <FlatList
-        ref={flatListRef} // Attach the ref to FlatList
-        ListHeaderComponent={<Post post={post} />}
-        data={comments}
-        renderItem={({ item }) => <CommentCard comment={item} />}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 16, paddingTop: insets.top }}
-        showsVerticalScrollIndicator={false} // Optional: Hide the scroll indicator
-      />
-    </KeyboardAvoidingView>
+    <FlatList
+      ref={flatListRef} // Attach the ref to FlatList
+      data={comments}
+      renderItem={({ item }) => <CommentCard comment={item} />}
+      keyExtractor={(item) => item.id}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={
+        <Post post={post} />
+      }
+      contentContainerStyle={{ paddingBottom: insets.bottom }}
+      keyboardShouldPersistTaps="handled"
+    />
   );
 }
