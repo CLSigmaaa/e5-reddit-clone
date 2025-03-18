@@ -1,33 +1,41 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import { Text } from "~/components/ui/text"
+import { FlatList } from 'react-native';
+import { Post } from "~/components/Post";
+import { sub } from "date-fns";
 
-import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function HomeScreen() {
-  return (
-    <SafeAreaView>
-      <ThemedText type="title">
-        Home
-      </ThemedText>
-    </SafeAreaView>
-  );
+const posts = [
+    {
+        id: "1",
+        title: "Sample Post Title",
+        description: "This is a sample post description. It can be long or short. In this case, it is very long to demonstrate the layout. However, it can be any length. To provide a better user experience, it is recommended to keep it short and concise. Here is some more text to make it even longer. We can add more text if needed.",
+        subReddit: "Sample_Subreddit",
+        voteCount: 123,
+        comments: [
+            { id: 1 },
+            { id: 2 }
+        ]
+    },
+    {
+        id: "2",
+        title: "Another Post Title",
+        subReddit: "Another_Subreddit",
+        description: "This is another sample post description.",
+        created_at: "2023-01-01T12:00:00Z",
+        group: {
+            name: "Another Group",
+            image: "https://source.unsplash.com/random/800x600",
+        },
+        upvotes: [{ sum: 456 }],
+        nr_of_comments: [{ count: 20 }],
+    },
+];
+
+export default function Home() {
+    return (
+        <FlatList
+            data={posts}
+            renderItem={({ item }) => <Post post={item} />}
+        />
+    )
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
