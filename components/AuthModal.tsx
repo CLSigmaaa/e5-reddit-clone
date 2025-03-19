@@ -37,15 +37,19 @@ export const AuthModal = ({
     className?: string;
     props?: any;
 }) => {
-    const [activeTab, setActiveTab] = useState('login');
-
     return (
         <View className={`flex flex-col gap-6 ${className}`} {...props}>
-            <Card className="border-0 shadow-none"> {/* Removed border and shadow */}
+            <Card className="border-0 shadow-none">
                 <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Welcome back</CardTitle>
+                    <CardTitle className="text-xl">
+                        <Text>
+                            Welcome back
+                        </Text>
+                    </CardTitle>
                     <CardDescription>
-                        Login with your Apple or Google account
+                        <Text>
+                            Login with your Apple or Google account
+                        </Text>
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -92,7 +96,7 @@ export const AuthModal = ({
                             </Button>
                         </View>
                         <View className="text-center text-sm flex-row items-center justify-center">
-                            <Text className='text-gray-300 flex items-center'>
+                            <Text className="text-gray-300 flex items-center">
                                 Don&apos;t have an account?{' '}
                                 <Text className="underline underline-offset-4 text-gray-300">Sign up</Text>
                             </Text>
@@ -100,18 +104,6 @@ export const AuthModal = ({
                     </View>
                 </CardContent>
             </Card>
-            {/* <View className="text-center text-xs text-gray-300">
-                <Text className='text-gray-300'>
-                    By clicking continue, you agree to our{' '}
-                    <Pressable onPress={() => console.log('Terms of Service pressed')}>
-                        <Text className="underline text-gray-300">Terms of Service</Text>
-                    </Pressable>{' '}
-                    and{' '}
-                    <Pressable onPress={() => console.log('Privacy Policy pressed')}>
-                        <Text className="underline text-gray-300">Privacy Policy</Text>
-                    </Pressable>.
-                </Text>
-            </View> */}
         </View>
     );
 };

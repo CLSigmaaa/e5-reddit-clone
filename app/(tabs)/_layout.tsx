@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from '~/components/ui/dialog';
 import { AuthModal } from "~/components/AuthModal";
+import SearchBar from "~/components/SearchBar";
 
 const LeftDrawer = createDrawerNavigator(); // Drawer for the left menu
 const RightDrawer = createDrawerNavigator(); // Drawer for the right user menu
@@ -24,23 +25,55 @@ const RightDrawer = createDrawerNavigator(); // Drawer for the right user menu
 function CustomDrawerContent() {
   const insets = useSafeAreaInsets();
   const fetcher = (...args) => fetch(...args).then((res) => res.json())
-  const { data, error, isLoading } = useSWR(`${process.env.EXPO_PUBLIC_API_URL}/subreddits`, fetcher)
-
-  // console.log(data)
-  console.log(error)
+  // const { data, error, isLoading } = useSWR(`${process.env.EXPO_PUBLIC_API_URL}/subreddits`, fetcher)
+  const subReddits = [
+    {
+      id: 1,
+      name: "reactjs"
+    },
+    {
+      id: 2,
+      name: "javascript"
+    },
+    {
+      id: 3,
+      name: "webdev"
+    },
+    {
+      id: 4,
+      name: "reactnative"
+    },
+    {
+      id: 5,
+      name: "nextjs"
+    },
+    {
+      id: 6,
+      name: "typescript"
+    }
+  ]
 
   return (
     <View style={[styles.drawerContent, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      <Text className="font-bold text-2xl text-gray-300">Your communities</Text>
+      <Text className="font-bold text-xl text-gray-200">Your communities</Text>
       <Link href="/subreddit/create">
-        <Text className="text-white">Créer</Text>
+        <View className="flex-row items-center p-4 gap-x-2 ">
+          <AntDesign name="plus" size={24} color="white" />
+          <Text className="text-white font-semibold">
+            Create a community
+          </Text>
+        </View>
       </Link>
 
-      <ScrollView>
-        {data?.map((subreddit) => (
+      <View className="border-b-[1px] border-neutral-800 mb-2" />
+
+      <ScrollView className="h-full">
+        {subReddits?.map((subreddit) => (
           <Link href={`/subreddit/${subreddit.id}`} key={subreddit.id}>
-            <Image source={{ uri: "https://i.pinimg.com/originals/ef/a2/8d/efa28d18a04e7fa40ed49eeb0ab660db.jpg" }} className="w-6 h-6 rounded-full" />
-            <Text className="text-white">{subreddit.name}</Text>
+            <View className="flex-row gap-x-2 font-medium p-2 items-center">
+              <Image source={{ uri: "https://i.pinimg.com/originals/ef/a2/8d/efa28d18a04e7fa40ed49eeb0ab660db.jpg" }} className="w-6 h-6 rounded-full" />
+              <Text className="text-white">r/ {subreddit.name}</Text>
+            </View>
           </Link>
         ))}
       </ScrollView>
@@ -53,17 +86,35 @@ function UserDrawerContent() {
 
   return (
     <View style={[styles.drawerContent, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-      <Text className="text-white">User Menu</Text>
-      <Text className="text-white">Profile</Text>
-      <Text className="text-white">Settings</Text>
-      <Text className="text-white">Logout</Text>
+      <Text className="font-bold text-xl text-gray-200 p-4">User Menu</Text>
+
+      <View className="border-b-[1px] border-neutral-800 mb-2" />
+
+      <Link href={`/profile/${1}`}>
+        <View className="flex-row gap-x-2 font-medium p-2 items-center">
+          <AntDesign name="profile" size={16} color="white" />
+          <Text className="text-white font-medium">Profile</Text>
+        </View>
+      </Link>
+      <Link href={`/history`}>
+        <View className="flex-row gap-x-2 font-medium p-2 items-center">
+          <AntDesign name="clockcircleo" size={16} color="white" />
+          <Text className="text-white font-medium">History</Text>
+        </View>
+      </Link>
+      <Link href={`/logout`}>
+        <View className="flex-row gap-x-2 font-medium p-2 items-center">
+          <AntDesign name="logout" size={16} color="white" />
+          <Text className="text-white font-medium">Logout</Text>
+        </View>
+      </Link>
     </View>
   );
 }
 
 function TabLayout({ navigation }) {
   const insets = useSafeAreaInsets();
-  const isLoggedIn = false; // Replace with actual authentication state
+  const isLoggedIn = true; // Replace with actual authentication state
 
   return (
     <Tabs
@@ -76,26 +127,29 @@ function TabLayout({ navigation }) {
           </Pressable>
         ),
         headerRight: () => (
-          isLoggedIn ? (
-            <Pressable onPress={() => navigation.getParent("RightDrawer")?.openDrawer()} style={{ marginRight: 16 }}>
-              <Image
-                source={{ uri: "https://github.com/shadcn.png" }} // Replace with user's avatar URL
-                style={{ width: 32, height: 32, borderRadius: 16 }}
-              />
-            </Pressable>
-          ) : (
-            <Dialog>
-              <DialogTrigger asChild>
-                <Pressable onPress={() => console.log("Login pressed")} style={{ marginRight: 16 }}>
-                  <AntDesign name="login" size={24} color="#FF5700" />
-                </Pressable>
+          <View>
+            {/* <SearchBar /> */}
 
-              </DialogTrigger>
-              <DialogContent>
-                <AuthModal />
-              </DialogContent>
-            </Dialog>
-          )
+            {isLoggedIn ? (
+              <Pressable onPress={() => navigation.getParent("RightDrawer")?.openDrawer()} style={{ marginRight: 16 }}>
+                <Image
+                  source={{ uri: "https://github.com/shadcn.png" }} // Replace with user's avatar URL
+                  style={{ width: 32, height: 32, borderRadius: 16 }}
+                />
+              </Pressable>
+            ) : (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Pressable onPress={() => console.log("Login pressed")} style={{ marginRight: 16 }}>
+                    <AntDesign name="login" size={24} color="#FF5700" />
+                  </Pressable>
+                </DialogTrigger>
+                <DialogContent>
+                  <AuthModal />
+                </DialogContent>
+              </Dialog>
+            )}
+          </View>
         ),
       }}
     >
@@ -120,9 +174,9 @@ function TabLayout({ navigation }) {
       <Tabs.Screen
         name="chat"
         options={{
-          headerTitle: "Reddit",
+          headerTitle: "Chats",
           title: "Chats",
-          headerTintColor: "#FF5700",
+          // headerTintColor: "#FF5700",
           tabBarIcon: ({ color }) => <Ionicons name="chatbubble-ellipses-outline" size={24} color={color} />,
         }}
       />

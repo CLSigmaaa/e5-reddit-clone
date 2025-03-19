@@ -9,13 +9,6 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '~/components/ui/accordion';
-
-import {
     Card,
     CardContent,
     CardDescription,
@@ -121,24 +114,18 @@ export default function Subreddit() {
                         className="rounded-full w-14 h-14"
                     />
                     <View className="flex-col">
-                        <H3>r/reactjs</H3>
+                        <H3>r/valou_le_filou</H3>
                         <Muted>{formatNumberOfSubscribers(subReddit.subscribers)}</Muted>
                     </View>
                 </View>
-                <View className="flex-row gap-x-4">
-                    <Link href='/create' asChild>
-                        <Button className="rounded-2xl flex-row gap-x-2 items-center" variant="secondary">
-                            <AntDesign name="plus" size={24} color="white" />
-                            <Text>Make a new post</Text>
-                        </Button>
-                    </Link>
+                <View className="w-36">
                     <Pressable
                         onPress={handleJoin}
                         className={`px-4 py-2 rounded-full flex items-center justify-center ${isJoined ? 'bg-white border border-gray-300' : 'bg-blue-600'
                             }`}
                     >
                         <Text className={`text-sm font-bold ${isJoined ? 'text-gray-600' : 'text-white'}`}>
-                            {isJoined ? 'Joined' : 'Join'}
+                            {isJoined ? 'Followed' : 'Follow'}
                         </Text>
                     </Pressable>
                 </View>
@@ -153,47 +140,15 @@ export default function Subreddit() {
                         <TabsTrigger value="posts" className={cn('flex-1 rounded-xl p-2 h-12', activeTab === 'posts' ? 'bg-neutral-800' : 'bg-transparent')}>
                             <Text>Posts</Text>
                         </TabsTrigger>
-                        <TabsTrigger value="about" className={cn('flex-1 rounded-xl p-2 h-12', activeTab === 'about' ? 'bg-neutral-800' : 'bg-transparent')}>
-                            <Text>About</Text>
+                        <TabsTrigger value="comments" className={cn('flex-1 rounded-xl p-2 h-12', activeTab === 'about' ? 'bg-neutral-800' : 'bg-transparent')}>
+                            <Text>Comments</Text>
                         </TabsTrigger>
                     </TabsList>
-                    <TabsContent value="about">
-                        <View className="p-4">
-                            <Card className="w-full">
-                                <CardHeader>
-                                    <H2>About r/reactjs</H2>
-                                </CardHeader>
-                                <CardContent>
-                                    <Text className="text-gray-500">{subReddit.description}</Text>
-                                    <Accordion
-                                        type='multiple'
-                                        collapsible
-                                        defaultValue={['item-1']}
-                                        className='w-full max-w-sm native:max-w-md'
-                                    >
-                                        <AccordionItem value='item-1'>
-                                            <AccordionTrigger>
-                                                <Text>Is it accessible?</Text>
-                                            </AccordionTrigger>
-                                            <AccordionContent>
-                                                <Text>Yes. It adheres to the WAI-ARIA design pattern.</Text>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                        <AccordionItem value='item-2'>
-                                            <AccordionTrigger>
-                                                <Text>What are universal components?</Text>
-                                            </AccordionTrigger>
-                                            <AccordionContent>
-                                                <Text>
-                                                    In the world of React Native, universal components are components that work on both
-                                                    web and native platforms.
-                                                </Text>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    </Accordion>
-                                </CardContent>
-                            </Card>
-                        </View>
+                    <TabsContent value="comments">
+                        <FlatList
+                            data={posts}
+                            renderItem={({ item }) => <Post post={item} />}
+                        />
                     </TabsContent>
                     <TabsContent value="posts">
                         <FlatList

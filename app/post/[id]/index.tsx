@@ -93,7 +93,7 @@ const CommentCard = ({ comment, level = 0 }) => {
     <Card style={{ marginLeft: level * 20, marginTop: 16 }}>
       <CardHeader>
         <View style={{ flexDirection: "row", alignItems: "center" }} className="gap-x-1">
-           <Image source={{ uri: "https://github.com/shadcn.png" }} className="w-6 h-6 rounded-full mr-2" />
+          <Image source={{ uri: "https://github.com/shadcn.png" }} className="w-6 h-6 rounded-full mr-2" />
           <Text className="text-sm text-gray-500">User</Text>
         </View>
       </CardHeader>
@@ -152,11 +152,16 @@ export default function DetailedPost() {
 
   const post = {
     id: "1",
-    title: "Sample Post Title",
-    description: "This is a sample post description.",
+    title: "Bleach Rebirth Of Souls Gameplay Reveal",
+    description: "Bleach: Rebirth of Souls is an upcoming action RPG based on the popular anime and manga series Bleach. The game is being developed by KLabGames and will be released on iOS and Android devices. The game features 3D graphics and real-time combat, with players able to control their favorite characters from the series. The game will also feature a story mode, where players can relive key moments from the series, as well as a multiplayer mode where they can team up with other players to take on powerful bosses. The game is set to be released in 2023.",
+    subReddit: "Bleach",
     voteCount: 123,
+    imageUrl: 'https://cdn.dlcompare.com/others_jpg/upload/news/image/premier-apercu-du-nouveau-gamepl-14b56e52-image-443086e38.jpg.webp',
+    comments: [
+      { id: 1 },
+      { id: 2 }
+    ]
   };
-
   return (
     <FlatList
       ref={flatListRef} // Attach the ref to FlatList

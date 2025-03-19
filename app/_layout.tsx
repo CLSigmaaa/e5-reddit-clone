@@ -95,6 +95,28 @@ export default function RootLayout() {
               animation: "slide_from_bottom"
             }}
           />
+          {/* <Stack.Screen
+            name="(tabs)/chats" // Corrected route name
+            options={{
+              headerTitle: '',
+              headerStyle: { backgroundColor: '#FF5700' },
+              headerLeft: () => <AntDesign name="close" size={24} color="white" onPress={() => router.back()} />,
+              headerRight: () =>
+                <View style={{ flexDirection: 'row', gap: 10 }}></View>,
+              animation: "slide_from_bottom"
+            }}
+          /> */}
+          <Stack.Screen
+            name="conversation/[id]/index" // Corrected route name
+            options={{
+              headerTitle: '',
+              headerStyle: { backgroundColor: '#FF5700' },
+              headerLeft: () => <AntDesign name="close" size={24} color="white" onPress={() => router.back()} />,
+              headerRight: () =>
+                <View style={{ flexDirection: 'row', gap: 10 }}></View>,
+              animation: "slide_from_bottom"
+            }}
+          />
         </Stack>
         <PortalHost />
       </ThemeProvider>

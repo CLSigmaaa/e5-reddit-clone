@@ -86,8 +86,8 @@ export const Post = ({ post, isDetailed = true }) => {
                     <CardDescription>
                         {post.imageUrl && (
                             <Image
-                                source={{ uri: post.imageUrl }}
-                                style={{ width: '100%', height: 200 }}
+                                source={{ uri:  post.imageUrl}}
+                                style={{ width: '100%', height: 300 }}
                                 resizeMode="cover"
                                 className="rounded-lg mb-2"
                             />
@@ -97,14 +97,12 @@ export const Post = ({ post, isDetailed = true }) => {
                                 {post.description}
                             </Text>
                         ) : (
-                            // if there is an image don't display text otherwhise display text
                             post.imageUrl ? null : post.description.slice(0, 100) + (post.description.length > 100 ? '...' : '')
                         )}
                     </CardDescription>
                 </CardContent>
             </Link>
             <CardFooter className="flex gap-x-4 items-center mt-4">
-                {/* Upvote/Downvote Section */}
                 <View className="bg-gray-700 p-2 rounded-2xl flex-row gap-x-2 items-center">
                     <Pressable onPress={handleUpvote}>
                         <AntDesign

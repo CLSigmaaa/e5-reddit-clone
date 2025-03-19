@@ -71,7 +71,7 @@ export default function Create() {
 
     return (
         <SafeAreaView className="flex-1">
-            <View className="w-full gap-y-4">
+            <View className="w-full gap-y-4 p-4">
                 <H3>Make a new post</H3>
                 <View className="w-[75vw] flex justify-center">
                     <Select
@@ -79,7 +79,7 @@ export default function Create() {
                         value={selectedSubReddit}
                         onValueChange={(value) => setSelectedSubReddit(value)}
                     >
-                        <SelectTrigger className="rounded-full bg-neutral-800">
+                        <SelectTrigger className="rounded-2xl bg-neutral-800">
                             <SelectValue
                                 className="text-foreground text-sm native:text-lg"
                                 placeholder="Select a SubReddit"
