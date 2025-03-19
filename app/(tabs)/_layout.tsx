@@ -6,6 +6,18 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useSWR from "swr";
 import { Scroll } from "lucide-react-native";
 
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '~/components/ui/dialog';
+import { AuthModal } from "~/components/AuthModal";
+
 const LeftDrawer = createDrawerNavigator(); // Drawer for the left menu
 const RightDrawer = createDrawerNavigator(); // Drawer for the right user menu
 
@@ -51,7 +63,7 @@ function UserDrawerContent() {
 
 function TabLayout({ navigation }) {
   const insets = useSafeAreaInsets();
-  const isLoggedIn = true; // Replace with actual authentication state
+  const isLoggedIn = false; // Replace with actual authentication state
 
   return (
     <Tabs
@@ -72,9 +84,17 @@ function TabLayout({ navigation }) {
               />
             </Pressable>
           ) : (
-            <Pressable onPress={() => console.log("Login pressed")} style={{ marginRight: 16 }}>
-              <AntDesign name="login" size={24} color="#FF5700" />
-            </Pressable>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Pressable onPress={() => console.log("Login pressed")} style={{ marginRight: 16 }}>
+                  <AntDesign name="login" size={24} color="#FF5700" />
+                </Pressable>
+
+              </DialogTrigger>
+              <DialogContent>
+                <AuthModal />
+              </DialogContent>
+            </Dialog>
           )
         ),
       }}
@@ -106,7 +126,7 @@ function TabLayout({ navigation }) {
           tabBarIcon: ({ color }) => <Ionicons name="chatbubble-ellipses-outline" size={24} color={color} />,
         }}
       />
-    </Tabs>
+    </Tabs >
   );
 }
 
